@@ -2,6 +2,6 @@
 
 ## Zadania:
 
-* [ ] Shader compilation error - obsługa błędów kompilacji
-* [ ] Wczytywanie kodu shadera z pliku
+* [x] Shader compilation error - obsługa błędów kompilacji
+* [x] Wczytywanie kodu shadera z pliku
 * [ ] Trójkolorowy trójkąt
