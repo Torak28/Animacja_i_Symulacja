@@ -1,12 +1,12 @@
 #version 330 core
 
-out vec4 vertexColor;
+//odbpowiednie bufory
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+
+out vec3 ourColor;
+
 void main(void) {
-    const vec4 vertices[3] = vec4[3](
-        vec4(0.5, -0.5, 0.0, 1.0),
-        vec4(-0.5, -0.5, 0.0, 1.0),
-        vec4(0.0, 0.5, 0.0, 1.0)
-    );
-    gl_Position = vertices[gl_VertexID];
-    vertexColor = vec4(0.5, 0.0, 0.0, 1.0);
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
 }
