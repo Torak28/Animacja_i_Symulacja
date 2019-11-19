@@ -94,23 +94,28 @@ GLuint compile_shaders(void) {
     static const GLchar * vertex_shader_source[] = {
         "#version 330 core \n"
 
+        "layout (location = 1) in vec3 aColor;"
+
         "in vec4 position;"
+        "out vec3 ourColor;"
 
         "uniform mat4 mv_matrix;"
         "uniform mat4 proj_matrix;"
 
         "void main(void) {"
         "    gl_Position = proj_matrix * mv_matrix * position;"
+        "    ourColor = aColor;"
         "}"
     };
 
     static const GLchar * fragment_shader_source[] = {
         "#version 330 core \n"
 
+        "in vec3 ourColor;"
         "out vec4 color;"
 
         "void main(void) {"
-        "    color = vec4(0.7, 0.7, 0.7, 1.0);"
+        "    color = vec4(ourColor, 1.0);"
         "}"
     };
 
@@ -149,62 +154,68 @@ void startup() {
     glCreateVertexArrays(1, &vertex_array_object);
     glBindVertexArray(vertex_array_object);
 
+    unsigned int vertex_buffer_object;
+    glGenBuffers(1, &vertex_buffer_object);
     static const GLfloat vertex_positions[] = {
-        -0.25f,  0.25f, -0.25f,
-        -0.25f, -0.25f, -0.25f,
-         0.25f, -0.25f, -0.25f,
+        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
+        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
 
-         0.25f, -0.25f, -0.25f,
-         0.25f,  0.25f, -0.25f,
-        -0.25f,  0.25f, -0.25f,
+         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
 
-         0.25f, -0.25f, -0.25f,
-         0.25f, -0.25f,  0.25f,
-         0.25f,  0.25f, -0.25f,
+         0.25f, -0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
+         0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f,  0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
 
-         0.25f, -0.25f,  0.25f,
-         0.25f,  0.25f,  0.25f,
-         0.25f,  0.25f, -0.25f,
+         0.25f, -0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
 
-         0.25f, -0.25f,  0.25f,
-        -0.25f, -0.25f,  0.25f,
-         0.25f,  0.25f,  0.25f,
+         0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
+        -0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
 
-        -0.25f, -0.25f,  0.25f,
-        -0.25f,  0.25f,  0.25f,
-         0.25f,  0.25f,  0.25f,
+        -0.25f, -0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
 
-        -0.25f, -0.25f,  0.25f,
-        -0.25f, -0.25f, -0.25f,
-        -0.25f,  0.25f,  0.25f,
+        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
+        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
 
-        -0.25f, -0.25f, -0.25f,
-        -0.25f,  0.25f, -0.25f,
-        -0.25f,  0.25f,  0.25f,
+        -0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
+        -0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
 
-        -0.25f, -0.25f,  0.25f,
-         0.25f, -0.25f,  0.25f,
-         0.25f, -0.25f, -0.25f,
+        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
+         0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
 
-         0.25f, -0.25f, -0.25f,
-        -0.25f, -0.25f, -0.25f,
-        -0.25f, -0.25f,  0.25f,
+         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
+        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
 
-        -0.25f,  0.25f, -0.25f,
-         0.25f,  0.25f, -0.25f,
-         0.25f,  0.25f,  0.25f,
+        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
+         0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
 
-         0.25f,  0.25f,  0.25f,
-        -0.25f,  0.25f,  0.25f,
-        -0.25f,  0.25f, -0.25f
+         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f
     };
 
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    // Tutaj dzieje się magia
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CW);
@@ -220,7 +231,9 @@ void render(double currentTime) {
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
     mv_matrix = (
-        glm::translate(I, glm::vec3(0.0f, 0.0f, -1.0f))
+        //macierz obrot glm::rotate * glm::translate od currentTime 
+        //glm::scale(I, glm::vec3(1.0f, sin(currentTime), 1.0f)) * m
+        glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(I, glm::vec3((float) cos(0.0f), (float) sin(0.0f), -5.0f)) * glm::rotate(I, float(currentTime), glm::vec3(-1.0f, 1.0f, 0.0f))
     );
 
     const GLfloat color[] = {
@@ -254,6 +267,8 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
     window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    proj_matrix = glm::perspective(glm::radians(50.0f), 800/600.0f, 0.1f, 1000.0f);
+
     if(! window) {
         glfwTerminate();
         return -1;
