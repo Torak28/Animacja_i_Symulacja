@@ -1,4 +1,6 @@
-# Zadania
+# Lab 3
+
+## Zadania
 
  * [x] kręcenie wokół osi
  * [x] kręcenie wokół sfery

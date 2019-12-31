@@ -1,5 +1,6 @@
-Wiele kwadratow
-źdźbła trawy
+# Lab 4
+
+## Zadania:
 
  * [ ] seria kwadratów
  * [ ] Model źdźbła trawy

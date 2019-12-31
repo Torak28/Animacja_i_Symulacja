@@ -1,4 +1,6 @@
-mv = mpdel + view -> done!
+# Lab 5
+
+## Zadania:
 
  * [ ] zmiana kamery
  * [ ] sterowanie kamery myszą
