@@ -1,0 +1,2 @@
+Wiele kwadratow
+źdźbła trawy
