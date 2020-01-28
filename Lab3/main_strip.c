@@ -19,8 +19,6 @@ GLuint vertex_array_object;
 GLuint buffer;
 GLuint buffer2;
 
-GLuint buffer3;
-
 GLint mv_location;
 GLint proj_location;
 
@@ -159,88 +157,88 @@ void startup() {
 
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
+    static const GLfloat vertex_positions[] = {
+        -0.25f,  0.25f, -0.25f,  
+        -0.25f, -0.25f, -0.25f,  
+         0.25f, -0.25f, -0.25f,  
+         0.25f, -0.25f, -0.25f,  
+         0.25f,  0.25f, -0.25f,  
+        -0.25f,  0.25f, -0.25f,  
+         0.25f, -0.25f, -0.25f,  
+         0.25f, -0.25f,  0.25f,  
+         0.25f,  0.25f, -0.25f,  
+         0.25f, -0.25f,  0.25f,  
+         0.25f,  0.25f,  0.25f,  
+         0.25f,  0.25f, -0.25f,  
+         0.25f, -0.25f,  0.25f,  
+        -0.25f, -0.25f,  0.25f,  
+         0.25f,  0.25f,  0.25f,  
+        -0.25f, -0.25f,  0.25f,  
+        -0.25f,  0.25f,  0.25f,  
+         0.25f,  0.25f,  0.25f,  
+        -0.25f, -0.25f,  0.25f,  
+        -0.25f, -0.25f, -0.25f,  
+        -0.25f,  0.25f,  0.25f,  
+        -0.25f, -0.25f, -0.25f,  
+        -0.25f,  0.25f, -0.25f,  
+        -0.25f,  0.25f,  0.25f,  
+        -0.25f, -0.25f,  0.25f,  
+         0.25f, -0.25f,  0.25f,  
+         0.25f, -0.25f, -0.25f,  
+         0.25f, -0.25f, -0.25f,  
+        -0.25f, -0.25f, -0.25f,  
+        -0.25f, -0.25f,  0.25f,  
+        -0.25f,  0.25f, -0.25f,  
+         0.25f,  0.25f, -0.25f,  
+         0.25f,  0.25f,  0.25f,  
+         0.25f,  0.25f,  0.25f,  
+        -0.25f,  0.25f,  0.25f,  
+        -0.25f,  0.25f, -0.25f
+    };
 
-    static const GLfloat vertex_all_pos[] = {
-        0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 1.0f,
+static const GLfloat vertex_col[] = {
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
         1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
         1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 1.0f,
-    };
-
-    static const GLint vertex_ind[] = {
-        0, 1, 2,
-        1, 3, 2,
-        7, 5, 1,
-        7, 1, 3,
-        6, 4, 5,
-        6, 5, 7,
-        6, 4, 0,
-        6, 0, 2,
-        6, 7, 3,
-        6, 3, 2,
-        4, 5, 1,
-        4, 1, 0
-    };
-
-    static const GLfloat vertex_pos[] = {
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-    };
-
-    static const GLfloat vertex_col[] = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
         1.0f, 1.0f, 0.0f,
         1.0f, 0.5f, 0.0f,
+        1.0f, 0.5f, 0.0f,
+        1.0f, 0.5f, 0.0f,
+        1.0f, 0.5f, 0.0f,
+        1.0f, 0.5f, 0.0f,
+        1.0f, 0.5f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 1.0f,
         0.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 1.0f,
-        0.0f, 0.5f, 1.0f
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f
     };
-
 
     //pozycje
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_all_pos), vertex_all_pos, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -253,14 +251,8 @@ void startup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
 
-    //indexy
-    glGenBuffers(3, &buffer3);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer3);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertex_ind), vertex_ind, GL_STATIC_DRAW);
-
-    glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CW);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
 }
 
 void shutdown() {
@@ -284,9 +276,7 @@ void render(double currentTime) {
         0.0f,
         1.0f
     };
-    const GLfloat xd = 1.0f;
     glClearBufferfv(GL_COLOR, 0, color);
-    glClearBufferfv(GL_DEPTH, 0, &xd);
 
     glUseProgram(rendering_program);
 
@@ -295,8 +285,7 @@ void render(double currentTime) {
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
     glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 int main(void) {
