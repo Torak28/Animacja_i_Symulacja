@@ -18,6 +18,7 @@ GLuint rendering_program;
 GLuint vertex_array_object;
 GLuint buffer;
 GLuint buffer2;
+GLuint buffer3;
 
 GLint mv_location;
 GLint proj_location;
@@ -158,90 +159,49 @@ void startup() {
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
     static const GLfloat vertex_positions[] = {
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-         0.25f, -0.25f, -0.25f,  
-         0.25f, -0.25f, -0.25f,  
-         0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-         0.25f, -0.25f, -0.25f,  
-         0.25f, -0.25f,  0.25f,  
-         0.25f,  0.25f, -0.25f,  
-         0.25f, -0.25f,  0.25f,  
-         0.25f,  0.25f,  0.25f,  
-         0.25f,  0.25f, -0.25f,  
-         0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-         0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-         0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-         0.25f, -0.25f,  0.25f,  
-         0.25f, -0.25f, -0.25f,  
-         0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-         0.25f,  0.25f, -0.25f,  
-         0.25f,  0.25f,  0.25f,  
-         0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f
+        0.25f,  0.25f,  0.25f,
+       -0.25f,  0.25f,  0.25f,
+
+        0.25f,  0.25f, -0.25f,
+       -0.25f,  0.25f, -0.25f,
+
+        0.25f, -0.25f,  0.25f,
+       -0.25f, -0.25f,  0.25f,
+
+       -0.25f, -0.25f, -0.25f,
+        0.25f, -0.25f, -0.25f
     };
 
-static const GLfloat vertex_col[] = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
+    static const GLuint elements[] = {
+        3, 2, 6, 7, 4, 2, 0,
+        3, 1, 6, 5, 4, 1, 0
+    };
+
+    static const GLfloat vertex_col[] = {
         1.0f, 1.0f, 1.0f,
         1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
         1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
+
         1.0f, 0.5f, 0.0f,
-        1.0f, 0.5f, 0.0f,
-        1.0f, 0.5f, 0.0f,
-        1.0f, 0.5f, 0.0f,
-        1.0f, 0.5f, 0.0f,
-        1.0f, 0.5f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
         0.0f, 0.0f, 1.0f,
         0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
+
+        0.0f, 1.0f, 1.0f,
+        0.0f, 0.5f, 1.0f
     };
 
     //pozycje
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), vertex_positions, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    //elementy
+    glGenBuffers(1, &buffer3);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer3);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 14 * sizeof(GLuint), elements, GL_STATIC_DRAW);
 
     //kolory
     glGenBuffers(2, &buffer2);
@@ -285,7 +245,7 @@ void render(double currentTime) {
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
     glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
 }
 
 int main(void) {

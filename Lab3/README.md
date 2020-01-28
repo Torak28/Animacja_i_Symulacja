@@ -8,6 +8,8 @@
    * y = R * sin(alfa)
  * [x] kolorki
    * poprawić na pojedyncze kolory na ścianach
- * [ ] Triangle_Strip
+ * [x] [Triangle_Strip](https://www.paridebroggi.com/blogpost/2015/06/16/optimized-cube-opengl-triangle-strip/)
 
-![gif](https://imgur.com/Lq7i70h)
+![gif](https://i.imgur.com/Lq7i70h.gif)
+
+![gif](https://i.imgur.com/Blutahr.gif)
