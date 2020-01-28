@@ -161,53 +161,53 @@ void startup() {
     
 
     static const GLfloat vertex_positions[] = {
-        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
-        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
+        -0.25f,  0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
+        -0.25f, -0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
+         0.25f, -0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
+
+         0.25f, -0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
+         0.25f,  0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
+        -0.25f,  0.25f, -0.25f,  1.0f, 1.0f, 1.0f,
 
          0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
-         0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
-
-         0.25f, -0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
-         0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
+         0.25f, -0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
          0.25f,  0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
 
          0.25f, -0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
-         0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
+         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f,  0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
 
+         0.25f, -0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+        -0.25f, -0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+
+        -0.25f, -0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  1.0f, 1.0f, 0.0f,
+
+        -0.25f, -0.25f,  0.25f,  1.0f, 0.5f, 0.0f,
+        -0.25f, -0.25f, -0.25f,  1.0f, 0.5f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  1.0f, 0.5f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,  1.0f, 0.5f, 0.0f,
+        -0.25f,  0.25f, -0.25f,  1.0f, 0.5f, 0.0f,
+        -0.25f,  0.25f,  0.25f,  1.0f, 0.5f, 0.0f,
+
+        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
          0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-        -0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f, -0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
 
-        -0.25f, -0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
-        -0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f,  0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-
+         0.25f, -0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
+        -0.25f, -0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
         -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-        -0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
 
-        -0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
         -0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-        -0.25f,  0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-
-        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-         0.25f, -0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
-
-         0.25f, -0.25f, -0.25f,  1.0f, 0.0f, 0.0f,
-        -0.25f, -0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-        -0.25f, -0.25f,  0.25f,  0.0f, 0.0f, 1.0f,
-
-        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f,
          0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f,
-         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
 
-         0.25f,  0.25f,  0.25f,  1.0f, 0.0f, 0.0f,
+         0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
         -0.25f,  0.25f,  0.25f,  0.0f, 1.0f, 0.0f,
-        -0.25f,  0.25f, -0.25f,  0.0f, 0.0f, 1.0f
+        -0.25f,  0.25f, -0.25f,  0.0f, 1.0f, 0.0f
     };
 
     glGenBuffers(1, &buffer);
@@ -221,8 +221,9 @@ void startup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);
+    glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_CULL_FACE);
+    // glFrontFace(GL_CW);
 }
 
 void shutdown() {
@@ -238,7 +239,7 @@ void render(double currentTime) {
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
 
-mv_matrix = (
+    mv_matrix = (
        glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f))
        * glm::translate(I, glm::vec3(0.0f, sin(0.0f), -3.0f))
        * glm::rotate(I, float(currentTime), glm::vec3(cos(-1.0f), sin(0.0f), 0.0f))
@@ -251,8 +252,9 @@ mv_matrix = (
         0.5f,
         1.0f
     };
+    const GLfloat xd = 1.0f;
     glClearBufferfv(GL_COLOR, 0, color);
-    //glClearBufferfv(GL_COLOR, 0, color);
+    glClearBufferfv(GL_DEPTH, 0, &xd);
 
     glUseProgram(rendering_program);
 
