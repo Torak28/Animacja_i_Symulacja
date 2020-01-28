@@ -264,10 +264,10 @@ void render(double currentTime) {
     glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
     for (int i =0;i<6;++i) {
-         mv_matrix = (
-       glm::translate(mv_matrix, glm::vec3(0.0f, sin(2.0f), -1.0*i))
-    );
-      glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
+        mv_matrix = (
+            glm::translate(mv_matrix, glm::vec3(0.0f, sin(2.0f), -1.0*i))
+        );
+        glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 }

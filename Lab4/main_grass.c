@@ -116,7 +116,7 @@ GLuint compile_shaders(void) {
 
         "void main(void) {"
         "    vec2 pos = aPos * (gl_InstanceID / rand2) + rand1;"
-        "    gl_Position = vec4(pos + aOffset, 0.0, 1.0);"
+        "    gl_Position = vec4(aPos + aOffset, 0.0, 1.0);"
         "    ourColor = aColor;"
         "}"
     };
@@ -164,16 +164,16 @@ GLuint compile_shaders(void) {
 void startup() {
     rendering_program = compile_shaders();
 
-    glm::vec2 translations[100];
+    glm::vec2 translations[10000];
     int index = 0;
     float offset = 0.1f;
-    for (int y = -10; y < 10; y += 2)
+    for (int y = -100; y < 100; y += 2)
     {
-        for (int x = -5; x < 5; x += 1)
+        for (int x = -50; x < 50; x += 1)
         {
             glm::vec2 translation;
-            translation.x = (float)x / 10.0f + offset;
-            translation.y = (float)y / 10.0f + offset;
+            translation.x = (float)x / 30.0f + offset;
+            translation.y = (float)y / 30.0f + offset;
             translations[index++] = translation;
         }
     }
@@ -181,30 +181,30 @@ void startup() {
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 100, &translations[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 10000, &translations[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     static const GLfloat vertex_positions[] = {
         // positions     // colors
-       -0.03f,  0.03f,  1.0f, 0.0f, 0.0f,
-        0.03f, -0.03f,  1.0f, 0.0f, 0.0f,
-       -0.03f, -0.03f,  1.0f, 0.0f, 0.0f,
+        0.00f,  0.01f,  1.0f, 0.0f, 0.0f,
+        0.01f, -0.01f,  1.0f, 0.0f, 0.0f,
+        0.00f, -0.01f,  1.0f, 0.0f, 0.0f,
 
-       -0.03f,  0.03f,  1.0f, 0.2f, 0.0f,
-        0.03f, -0.03f,  1.0f, 0.2f, 0.0f,
-        0.03f,  0.03f,  1.0f, 0.2f, 0.0f,
+        0.00f,  0.01f,  1.0f, 0.2f, 0.0f,
+        0.01f, -0.01f,  1.0f, 0.2f, 0.0f,
+        0.01f,  0.01f,  1.0f, 0.2f, 0.0f,
 
-       -0.03f,  0.09f,  0.0f, 1.0f, 0.0f,
-        0.03f,  0.03f,  0.0f, 1.0f, 0.0f,
-       -0.03f,  0.03f,  0.0f, 1.0f, 0.0f,
+        0.00f,  0.03f,  0.0f, 1.0f, 0.0f,
+        0.01f,  0.01f,  0.0f, 1.0f, 0.0f,
+        0.00f,  0.01f,  0.0f, 1.0f, 0.0f,
 
-       -0.03f,  0.09f,  0.0f, 1.0f, 0.4f,
-        0.03f,  0.03f,  0.0f, 1.0f, 0.4f,
-        0.03f,  0.09f,  0.0f, 1.0f, 0.4f,
+        0.00f,  0.03f,  0.0f, 1.0f, 0.4f,
+        0.01f,  0.01f,  0.0f, 1.0f, 0.4f,
+        0.01f,  0.03f,  0.0f, 1.0f, 0.4f,
 
-       -0.00f,  0.15f,  0.0f, 0.0f, 1.0f,
-        0.03f,  0.09f,  0.0f, 0.0f, 1.0f,
-       -0.03f,  0.09f,  0.0f, 0.0f, 1.0f
+        0.005f,  0.05f,  0.0f, 0.0f, 1.0f,
+        0.01f,  0.03f,  0.0f, 0.0f, 1.0f,
+        0.00f,  0.03f,  0.0f, 0.0f, 1.0f
     };
 
     glGenVertexArrays(1, &buffer);
@@ -249,7 +249,7 @@ void render(double currentTime) {
     glUniform1f(rand2_location, rand2);
 
     glBindVertexArray(buffer);
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 15, 100);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 15, 10000);
     glBindVertexArray(0);
 }
 
