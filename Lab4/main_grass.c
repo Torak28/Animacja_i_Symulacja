@@ -20,12 +20,15 @@ GLuint buffer;
 GLuint buffer2;
 GLuint buffer3;
 
-GLint mv_location;
-GLint proj_location;
+GLint rand1_location;
+GLint rand2_location;
 
 float aspect;
 glm::mat4 mv_matrix;
 glm::mat4 proj_matrix;
+
+float rand1;
+float rand2;
 
 using namespace std;
 
@@ -88,6 +91,13 @@ static void resize_callback(GLFWwindow* window, int width, int height) {
     proj_matrix = glm::perspective(glm::radians(50.0f), aspect, 0.1f, 1000.0f);
 }
 
+float RandomFloat(float a, float b) {
+    float random = ((float) rand()) / (float) RAND_MAX;
+    float diff = b - a;
+    float r = random * diff;
+    return a + r;
+}
+
 GLuint compile_shaders(void) {
     GLuint vertex_shader;
     GLuint fragment_shader;
@@ -100,10 +110,13 @@ GLuint compile_shaders(void) {
         "layout (location = 1) in vec3 aColor;"
         "layout (location = 2) in vec2 aOffset;"
 
+        "uniform float rand2;"
+        "uniform float rand1;"
         "out vec3 ourColor;"
 
         "void main(void) {"
-        "    gl_Position = vec4(aPos + aOffset, 0.0, 1.0);"
+        "    vec2 pos = aPos * (gl_InstanceID / rand2) + rand1;"
+        "    gl_Position = vec4(pos + aOffset, 0.0, 1.0);"
         "    ourColor = aColor;"
         "}"
     };
@@ -150,16 +163,13 @@ GLuint compile_shaders(void) {
 
 void startup() {
     rendering_program = compile_shaders();
-    // Nie wiem po co to?
-    glCreateVertexArrays(1, &vertex_array_object);
-    glBindVertexArray(vertex_array_object);
 
     glm::vec2 translations[100];
     int index = 0;
     float offset = 0.1f;
     for (int y = -10; y < 10; y += 2)
     {
-        for (int x = -10; x < 10; x += 2)
+        for (int x = -5; x < 5; x += 1)
         {
             glm::vec2 translation;
             translation.x = (float)x / 10.0f + offset;
@@ -167,7 +177,6 @@ void startup() {
             translations[index++] = translation;
         }
     }
-
 
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
@@ -177,13 +186,25 @@ void startup() {
 
     static const GLfloat vertex_positions[] = {
         // positions     // colors
-        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
-         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
-        -0.05f, -0.05f,  0.0f, 0.0f, 1.0f,
+       -0.03f,  0.03f,  1.0f, 0.0f, 0.0f,
+        0.03f, -0.03f,  1.0f, 0.0f, 0.0f,
+       -0.03f, -0.03f,  1.0f, 0.0f, 0.0f,
 
-        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
-         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
-         0.05f,  0.05f,  0.0f, 1.0f, 1.0f
+       -0.03f,  0.03f,  1.0f, 0.2f, 0.0f,
+        0.03f, -0.03f,  1.0f, 0.2f, 0.0f,
+        0.03f,  0.03f,  1.0f, 0.2f, 0.0f,
+
+       -0.03f,  0.09f,  0.0f, 1.0f, 0.0f,
+        0.03f,  0.03f,  0.0f, 1.0f, 0.0f,
+       -0.03f,  0.03f,  0.0f, 1.0f, 0.0f,
+
+       -0.03f,  0.09f,  0.0f, 1.0f, 0.4f,
+        0.03f,  0.03f,  0.0f, 1.0f, 0.4f,
+        0.03f,  0.09f,  0.0f, 1.0f, 0.4f,
+
+       -0.00f,  0.15f,  0.0f, 0.0f, 1.0f,
+        0.03f,  0.09f,  0.0f, 0.0f, 1.0f,
+       -0.03f,  0.09f,  0.0f, 0.0f, 1.0f
     };
 
     glGenVertexArrays(1, &buffer);
@@ -222,13 +243,21 @@ void render(double currentTime) {
 
     glUseProgram(rendering_program);
 
+    rand1_location = glGetUniformLocation(rendering_program, "rand1");
+    rand2_location = glGetUniformLocation(rendering_program, "rand2");
+    glUniform1f(rand1_location, rand1);
+    glUniform1f(rand2_location, rand2);
+
     glBindVertexArray(buffer);
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 100);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 15, 100);
     glBindVertexArray(0);
 }
 
 int main(void) {
     GLFWwindow* window;
+
+    rand1 = RandomFloat(0.00f, 0.05f);
+    rand2 = RandomFloat(95.0f, 97.0f);
 
     glfwSetErrorCallback(error_callback);
 
