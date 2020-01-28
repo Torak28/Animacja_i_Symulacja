@@ -2,7 +2,7 @@
 
 ## Zadania:
 
- * [ ] zmiana kamery
- * [ ] sterowanie kamery myszą
-   * [ ] obsługa zooma
+ * [x] zmiana kamery
+ * [x] sterowanie kamery myszą
+   * [x] obsługa zooma
  * [ ] oba obiekty poruszają się niezależnie
