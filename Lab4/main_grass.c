@@ -96,16 +96,14 @@ GLuint compile_shaders(void) {
     static const GLchar * vertex_shader_source[] = {
         "#version 330 core \n"
 
+        "layout (location = 0) in vec2 aPos;"
         "layout (location = 1) in vec3 aColor;"
+        "layout (location = 2) in vec2 aOffset;"
 
-        "in vec4 position;"
         "out vec3 ourColor;"
 
-        "uniform mat4 mv_matrix;"
-        "uniform mat4 proj_matrix;"
-
         "void main(void) {"
-        "    gl_Position = proj_matrix * mv_matrix * position;"
+        "    gl_Position = vec4(aPos + aOffset, 0.0, 1.0);"
         "    ourColor = aColor;"
         "}"
     };
@@ -137,7 +135,6 @@ GLuint compile_shaders(void) {
 
     shader_error(shaders);
 
-
     program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
@@ -153,99 +150,81 @@ GLuint compile_shaders(void) {
 
 void startup() {
     rendering_program = compile_shaders();
+    // Nie wiem po co to?
     glCreateVertexArrays(1, &vertex_array_object);
     glBindVertexArray(vertex_array_object);
 
+    glm::vec2 translations[100];
+    int index = 0;
+    float offset = 0.1f;
+    for (int y = -10; y < 10; y += 2)
+    {
+        for (int x = -10; x < 10; x += 2)
+        {
+            glm::vec2 translation;
+            translation.x = (float)x / 10.0f + offset;
+            translation.y = (float)y / 10.0f + offset;
+            translations[index++] = translation;
+        }
+    }
+
+
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 100, &translations[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     static const GLfloat vertex_positions[] = {
-        0.25f,  0.25f,  0.25f,
-       -0.25f,  0.25f,  0.25f,
+        // positions     // colors
+        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+        -0.05f, -0.05f,  0.0f, 0.0f, 1.0f,
 
-        0.25f,  0.25f, -0.25f,
-       -0.25f,  0.25f, -0.25f,
-
-        0.25f, -0.25f,  0.25f,
-       -0.25f, -0.25f,  0.25f,
-
-       -0.25f, -0.25f, -0.25f,
-        0.25f, -0.25f, -0.25f
+        -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+         0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+         0.05f,  0.05f,  0.0f, 1.0f, 1.0f
     };
 
-    static const GLuint elements[] = {
-        3, 2, 6, 7, 4, 2, 0,
-        3, 1, 6, 5, 4, 1, 0
-    };
+    glGenVertexArrays(1, &buffer);
+    glBindVertexArray(buffer);
 
-    static const GLfloat vertex_col[] = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,
-
-        1.0f, 0.5f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f,
-
-        0.0f, 1.0f, 1.0f,
-        0.0f, 0.5f, 1.0f
-    };
-
-    //pozycje
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), vertex_positions, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glGenBuffers(1, &buffer2);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer2);
+    
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
 
-    //elementy
-    glGenBuffers(1, &buffer3);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer3);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 14 * sizeof(GLuint), elements, GL_STATIC_DRAW);
-
-    //kolory
-    glGenBuffers(2, &buffer2);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer2);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_col), vertex_col, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
 
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribDivisor(2, 1);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void shutdown() {
-    glDeleteVertexArrays(1, &vertex_array_object);
+    glDeleteVertexArrays(1, &buffer);
+    glDeleteBuffers(1, &buffer2);
     glDeleteProgram(rendering_program);
-    glDeleteBuffers(1, &buffer);
 }
 
 void render(double currentTime) {
-    float f = (float) currentTime * (float) M_PI * 0.1f;
-    glm::mat4 I = glm::mat4(1.0f);
-    mv_matrix = (
-        //macierz obrot glm::rotate * glm::translate od currentTime 
-        //glm::scale(I, glm::vec3(1.0f, sin(currentTime), 1.0f)) * m
-        glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(I, glm::vec3((float) cos(0.0f), (float) sin(0.0f), -5.0f)) * glm::rotate(I, float(currentTime), glm::vec3(-1.0f, 1.0f, 0.0f))
-    );
-
-    const GLfloat color[] = {
-        (float) sin(currentTime) * 0.5f + 0.5f,
-        (float) cos(currentTime) * 0.5f + 0.5f,
-        0.0f,
-        1.0f
-    };
-    glClearBufferfv(GL_COLOR, 0, color);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(rendering_program);
 
-    mv_location = glGetUniformLocation(rendering_program, "mv_matrix");
-    proj_location = glGetUniformLocation(rendering_program, "proj_matrix");
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
-    glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-
-    glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(buffer);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 100);
+    glBindVertexArray(0);
 }
 
 int main(void) {
