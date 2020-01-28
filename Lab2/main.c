@@ -93,53 +93,58 @@ GLuint compile_shaders(void) {
     GLuint fragment_shader;
     GLuint program;
 
+    // Wczytanie z pliku
     string vertexSource = readFile("vertex_shader.vert");
     string fragmentSource = readFile("fragment_shader.vert");
 
     const GLchar *vertex_shader_source = (const GLchar *)vertexSource.c_str();
     const GLchar *fragment_shader_source = (const GLchar *)fragmentSource.c_str();
 
+    // Tablica shaderów
     vector <GLuint> shaders;
 
+    // Shader wierzchołków
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
     shaders.push_back(vertex_shader);
 
-    //xd
+    // Sprawdzenie błędów
     shader_error(shaders);
 
+
+    // Shader krawędzi
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
     glCompileShader(fragment_shader);
     shaders.push_back(fragment_shader);
 
+    // Sprawdzenie błędów kompilacji
     shader_error(shaders);
 
+    // Stworzenie programu i zlinkowanie(dołączenie) shaderów
     program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
 
-    //xd
+    // Sprawdzenie błędów linkowania
     linking_error(program, shaders);
 
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
+    // Zwrócenie programu
     return program;
 }
 
 void startup() {
+    // kompilajca shaderów
     rendering_program = compile_shaders();
     glCreateVertexArrays(1, &vertex_array_object);
     glBindVertexArray(vertex_array_object);
 
-    /*
-    Link: https://learnopengl.com/Getting-started/Shaders
-    */
-    //VAO = vertex_array_object
-    //VBO = vertex_buffer_object
+    // bufor wierzchołków
     unsigned int vertex_buffer_object;
     glGenBuffers(1, &vertex_buffer_object);
     float vertices[] = {
@@ -150,9 +155,11 @@ void startup() {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // Przekazanie wierzchołków
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    // Przekazanie kolorów
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 }
@@ -187,7 +194,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Lab2", NULL, NULL);
     if(! window) {
         glfwTerminate();
         return -1;
