@@ -210,10 +210,11 @@ void startup() {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 
-    // Tutaj dzieje się magia
+    // Przekazanie wierzchołków
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    // Przekazanie kolorów
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
@@ -231,8 +232,6 @@ void render(double currentTime) {
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
     mv_matrix = (
-        //macierz obrot glm::rotate * glm::translate od currentTime 
-        //glm::scale(I, glm::vec3(1.0f, sin(currentTime), 1.0f)) * m
         glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(I, glm::vec3((float) cos(0.0f), (float) sin(0.0f), -5.0f)) * glm::rotate(I, float(currentTime), glm::vec3(-1.0f, 1.0f, 0.0f))
     );
 
@@ -266,7 +265,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Lab 3", NULL, NULL);
     proj_matrix = glm::perspective(glm::radians(50.0f), 800/600.0f, 0.1f, 1000.0f);
 
     if(! window) {
