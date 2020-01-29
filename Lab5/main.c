@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-// #include <rand>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -274,15 +273,15 @@ void startup() {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 
-    // Tutaj dzieje się magia
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);
+    // glEnable(GL_CULL_FACE);
+    // glFrontFace(GL_CW);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void shutdown() {
@@ -307,7 +306,9 @@ void render(double currentTime) {
         0.5f,
         1.0f
     };
+    const GLfloat xd = 1.0f;
     glClearBufferfv(GL_COLOR, 0, color);
+    glClearBufferfv(GL_DEPTH, 0, &xd);
 
     glUseProgram(rendering_program);
 
@@ -352,11 +353,10 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 
-    // aspect = (float) width / (float) height;
     proj_matrix = glm::perspective(glm::radians(r_r), 800/600.0f, 0.1f, 1000.0f);
 
 
-    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Lab 5", NULL, NULL);
     if(! window) {
         glfwTerminate();
         return -1;
@@ -378,7 +378,6 @@ int main(void) {
     glfwSetWindowSizeCallback(window, resize_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSwapInterval(1);
 
     startup();
