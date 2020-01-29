@@ -37,12 +37,14 @@ def count_and_save(var_k):
         # print(f'{new_x} \t {new_y}')
 
 
-    plt.plot(x_tab, y_tab)
     title = 'k = ' + str(k)
-    plt.title(title)
+    plt.plot(x_tab, y_tab, label=title)
+    plt.title('Wpływ wartośći k')
+    plt.legend()
     filetitle = 'k' + str(k) + '.png'
     plt.savefig(filetitle)
 
+count_and_save(0.1)
 count_and_save(1)
 count_and_save(2)
 count_and_save(5)

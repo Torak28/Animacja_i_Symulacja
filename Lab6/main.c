@@ -186,45 +186,6 @@ void startup() {
         4, 1, 0
     };
 
-    static const GLfloat vertex_pos[] = {
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        0.25f, -0.25f,  0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f, -0.25f,  
-        -0.25f, -0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-        0.25f,  0.25f, -0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f,  0.25f,  
-        -0.25f,  0.25f, -0.25f,  
-    };
-
     static const GLfloat vertex_col[] = {
         1.0f, 1.0f, 1.0f,
         1.0f, 0.0f, 0.0f,
@@ -259,8 +220,6 @@ void startup() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertex_ind), vertex_ind, GL_STATIC_DRAW);
 
     glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CW);
 }
 
 void shutdown() {
@@ -273,8 +232,6 @@ void render(double currentTime) {
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
     mv_matrix = (
-        //macierz obrot glm::rotate * glm::translate od currentTime 
-        //glm::scale(I, glm::vec3(1.0f, sin(currentTime), 1.0f)) * m
         glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(I, glm::vec3((float) cos(0.0f), (float) sin(0.0f), -5.0f)) * glm::rotate(I, float(currentTime), glm::vec3(-1.0f, 1.0f, 0.0f))
     );
 
@@ -311,7 +268,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Lab 6", NULL, NULL);
     proj_matrix = glm::perspective(glm::radians(50.0f), 800/600.0f, 0.1f, 1000.0f);
 
     if(! window) {
