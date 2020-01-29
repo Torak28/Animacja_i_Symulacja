@@ -124,8 +124,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
         pitch = 89.0f;
     if (pitch < -89.0f)
         pitch = -89.0f;
-
-
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
@@ -279,8 +277,6 @@ void startup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CW);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -293,7 +289,6 @@ void shutdown() {
 void render(double currentTime) {
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
-
     model_matrix = (
         glm::rotate(I, float(currentTime), glm::vec3(0.0f, 0.0f, -1.0f))
         * glm::rotate(I, float(currentTime), glm::vec3(cos(-1.0f), sin(0.0f), 0.0f))
@@ -330,10 +325,9 @@ void render(double currentTime) {
     glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view_matrix));
     glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
-
     for (int i = 0;i < 2; ++i) {
         model_matrix = (
-            glm::translate(model_matrix, glm::vec3(0.0f, sin(2.0f), -1.0*i))
+            glm::translate(model_matrix, glm::vec3(0.0f, sin(2.0f), -1.0 * i))
         );
         glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(model_matrix));
         glDrawArrays(GL_TRIANGLES, 0, 36);
