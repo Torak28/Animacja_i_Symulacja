@@ -1,10 +1,24 @@
-# Lab 4
+# Laboratorium 4 - Instancje wielu obiektów
 
-## Zadania:
+**Zadania do wykonania:**
 
- * [ ] seria kwadratów
- * [ ] Model źdźbła trawy
-    * [ ] szereg prostokątów połączony
-    * [ ] trójkąt na górze
- * [ ] Pole trawy 100 x 100
- * [ ] Losowe falowanie
+ * [x] Seria sześcianow
+ * [x] Model źdźbła trawy
+ * [x] Pole trawy
+ * [ ] Losowe zmiany poszczególnych źdźbeł w ramach pola
+
+## Wprowadzenie
+
+## Seria sześcianow
+
+## Model źdźbła trawy
+
+## Pole trawy
+
+## Losowe zmiany poszczególnych źdźbeł w ramach pola
+
+## Wynik prac:
+
+![gif](https://i.imgur.com/n7IDRYf.gif)
+
+![https://imgur.com/S5ul7D4.png](https://imgur.com/S5ul7D4l.png)

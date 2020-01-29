@@ -20,15 +20,11 @@ GLuint buffer;
 GLuint buffer2;
 GLuint buffer3;
 
-GLint rand1_location;
-GLint rand2_location;
+GLint mv_location;
 
 float aspect;
 glm::mat4 mv_matrix;
 glm::mat4 proj_matrix;
-
-float rand1;
-float rand2;
 
 using namespace std;
 
@@ -91,13 +87,6 @@ static void resize_callback(GLFWwindow* window, int width, int height) {
     proj_matrix = glm::perspective(glm::radians(50.0f), aspect, 0.1f, 1000.0f);
 }
 
-float RandomFloat(float a, float b) {
-    float random = ((float) rand()) / (float) RAND_MAX;
-    float diff = b - a;
-    float r = random * diff;
-    return a + r;
-}
-
 GLuint compile_shaders(void) {
     GLuint vertex_shader;
     GLuint fragment_shader;
@@ -110,13 +99,11 @@ GLuint compile_shaders(void) {
         "layout (location = 1) in vec3 aColor;"
         "layout (location = 2) in vec2 aOffset;"
 
-        "uniform float rand2;"
-        "uniform float rand1;"
+        "uniform mat4 mv_matrix;"
         "out vec3 ourColor;"
 
         "void main(void) {"
-        "    vec2 pos = aPos * (gl_InstanceID / rand2) + rand1;"
-        "    gl_Position = vec4(aPos + aOffset, 0.0, 1.0);"
+        "    gl_Position = vec4(aPos + aOffset, 0.0, 1.0) * mv_matrix;"
         "    ourColor = aColor;"
         "}"
     };
@@ -167,13 +154,13 @@ void startup() {
     glm::vec2 translations[10000];
     int index = 0;
     float offset = 0.1f;
-    for (int y = -100; y < 100; y += 2)
+    for (int y = -50; y < 50; y += 2)
     {
-        for (int x = -50; x < 50; x += 1)
+        for (int x = -100; x < 100; x += 1)
         {
             glm::vec2 translation;
-            translation.x = (float)x / 30.0f + offset;
-            translation.y = (float)y / 30.0f + offset;
+            translation.x = (float)x / 10.0f + offset;
+            translation.y = (float)y / 5.0f + offset;
             translations[index++] = translation;
         }
     }
@@ -185,26 +172,25 @@ void startup() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     static const GLfloat vertex_positions[] = {
-        // positions     // colors
-        0.00f,  0.01f,  1.0f, 0.0f, 0.0f,
-        0.01f, -0.01f,  1.0f, 0.0f, 0.0f,
-        0.00f, -0.01f,  1.0f, 0.0f, 0.0f,
+        0.00f,  0.05f,  1.0f, 0.0f, 0.0f,
+        0.05f, -0.05f,  1.0f, 0.0f, 0.0f,
+        0.00f, -0.05f,  1.0f, 0.0f, 0.0f,
 
-        0.00f,  0.01f,  1.0f, 0.2f, 0.0f,
-        0.01f, -0.01f,  1.0f, 0.2f, 0.0f,
-        0.01f,  0.01f,  1.0f, 0.2f, 0.0f,
+        0.00f,  0.05f,  1.0f, 0.2f, 0.0f,
+        0.05f, -0.05f,  1.0f, 0.2f, 0.0f,
+        0.05f,  0.05f,  1.0f, 0.2f, 0.0f,
 
-        0.00f,  0.03f,  0.0f, 1.0f, 0.0f,
-        0.01f,  0.01f,  0.0f, 1.0f, 0.0f,
-        0.00f,  0.01f,  0.0f, 1.0f, 0.0f,
+        0.00f,  0.15f,  0.0f, 1.0f, 0.0f,
+        0.05f,  0.05f,  0.0f, 1.0f, 0.0f,
+        0.00f,  0.05f,  0.0f, 1.0f, 0.0f,
 
-        0.00f,  0.03f,  0.0f, 1.0f, 0.4f,
-        0.01f,  0.01f,  0.0f, 1.0f, 0.4f,
-        0.01f,  0.03f,  0.0f, 1.0f, 0.4f,
+        0.00f,  0.15f,  0.0f, 1.0f, 0.4f,
+        0.05f,  0.05f,  0.0f, 1.0f, 0.4f,
+        0.05f,  0.15f,  0.0f, 1.0f, 0.4f,
 
-        0.005f,  0.05f,  0.0f, 0.0f, 1.0f,
-        0.01f,  0.03f,  0.0f, 0.0f, 1.0f,
-        0.00f,  0.03f,  0.0f, 0.0f, 1.0f
+        0.025f,  0.25f,  0.0f, 0.0f, 1.0f,
+        0.05f,  0.15f,  0.0f, 0.0f, 1.0f,
+        0.00f,  0.15f,  0.0f, 0.0f, 1.0f
     };
 
     glGenVertexArrays(1, &buffer);
@@ -238,15 +224,17 @@ void shutdown() {
 }
 
 void render(double currentTime) {
+    glm::mat4 I = glm::mat4(1.0f);
+    mv_matrix = (
+        glm::scale(I, glm::vec3(0.15f, 0.2f, 1.0f))
+    );
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(rendering_program);
 
-    rand1_location = glGetUniformLocation(rendering_program, "rand1");
-    rand2_location = glGetUniformLocation(rendering_program, "rand2");
-    glUniform1f(rand1_location, rand1);
-    glUniform1f(rand2_location, rand2);
+    mv_location = glGetUniformLocation(rendering_program, "mv_matrix");
+    glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
 
     glBindVertexArray(buffer);
     glDrawArraysInstanced(GL_TRIANGLES, 0, 15, 10000);
@@ -255,9 +243,6 @@ void render(double currentTime) {
 
 int main(void) {
     GLFWwindow* window;
-
-    rand1 = RandomFloat(0.00f, 0.05f);
-    rand2 = RandomFloat(95.0f, 97.0f);
 
     glfwSetErrorCallback(error_callback);
 
@@ -268,7 +253,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Lab 4", NULL, NULL);
     proj_matrix = glm::perspective(glm::radians(50.0f), 800/600.0f, 0.1f, 1000.0f);
 
     if(! window) {

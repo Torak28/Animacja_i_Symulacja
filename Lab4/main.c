@@ -214,7 +214,6 @@ void startup() {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 
-    // Tutaj dzieje się magia
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -222,8 +221,6 @@ void startup() {
     glEnableVertexAttribArray(1);
 
     glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CW);
 }
 
 void shutdown() {
@@ -233,9 +230,6 @@ void shutdown() {
 }
 
 void render(double currentTime) {
-  
-
-
     float f = (float) currentTime * (float) M_PI * 0.1f;
     glm::mat4 I = glm::mat4(1.0f);
 
@@ -284,12 +278,10 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-
-    // aspect = (float) width / (float) height;
     proj_matrix = glm::perspective(glm::radians(50.0f), 800/600.0f, 0.1f, 1000.0f);
 
 
-    window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Lab 4", NULL, NULL);
     if(! window) {
         glfwTerminate();
         return -1;
