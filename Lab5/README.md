@@ -120,7 +120,7 @@ glfwSetScrollCallback(window, scroll_callback);
 
 Niestety nie byłem w stanie się z tym uporać
 
-![nope](https://media.giphy.com/media/kGCuRgmbnO9EI/giphy.gif)
+![nope](https://media2.giphy.com/media/jUwpNzg9IcyrK/giphy.gif?cid=790b76114d619fc2be45e36fbaf2296cc806b8be32824835&rid=giphy.gif)
 
 ## Wyniki:
 
